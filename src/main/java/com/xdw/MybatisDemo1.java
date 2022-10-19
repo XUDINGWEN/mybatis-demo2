@@ -24,8 +24,11 @@ public class MybatisDemo1{
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
         List<User> users = userMapper.selectAll();
-
         System.out.println(users);
+
+        User zhangsan = userMapper.selectByUsername("zhangsan");
+        System.out.println(zhangsan);
+
         sqlSession.close();
     }
 }
