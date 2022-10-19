@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    名称空间：namespace
+    id是唯一标识
+    resultType是返回结果的类型Blog
+    -->
+<mapper namespace="com.xdw.Mapper.BrandMapper">
+
+    <resultMap id="ResultMap" type="brand">
+    <!--
+    column是表的列名，property是实例类的属性
+    -->
+        <result column="brand_name" property="brandName"/>
+        <result column="company_name" property="companyName"/>
+    </resultMap>
+    <insert id="add">
+        insert into tb_brand(brand_name,company_name,ordered,description,status)
+        values (#{brandName},#{companyName},#{ordered},#{description},#{status});
+    </insert>
+
+
+    <select id="selectAll" resultMap="ResultMap">
+        select *
+        from tb_brand
+    </select>
+    <select id="selectAllByBrandNameUser" resultMap="ResultMap">
+        select *
+        from tb_brand
+        where brand_name=#{brandName};
+    </select>
+    <select id="selectByCondition" resultMap="ResultMap">
+        select *
+        from tb_brand
+        where 1=1
+        <if test="status != null">
+            and status like #{status}
+        </if>
+        <if test="brandName != null and brandName !=''">
+            and brand_name like #{brandName}
+        </if>
+        <if test="companyName != null" >
+            and company_name like #{companyName}
+        </if>
+        ;
+    </select>
+
+    <update id="update">
+        update tb_brand
+        <set>
+            <if test="brandName != null and brandName != ''">
+                brand_name = #{brandName}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                company_name = #{companyName}
+            </if>
+            <if test="status != null">
+                status = #{status}
+            </if>
+            <if test="ordered">
+                ordered=#{ordered}
+            </if>
+        </set>
+        <where>
+            id = #{id}
+        </where>
+        ;
+    </update>
+
+
+    <delete id="deleteById">
+        delete from tb_brand where id = #{id};
+    </delete>
+
+</mapper>

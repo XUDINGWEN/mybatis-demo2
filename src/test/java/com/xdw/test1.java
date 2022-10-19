@@ -117,5 +117,6 @@ public class test1 {
         System.out.println(mapper.selectAll());
         sqlSession.commit();
         sqlSession.close();
+        //
     }
 }
