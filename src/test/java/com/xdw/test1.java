@@ -97,7 +97,7 @@ public class test1 {
         BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
 
 
-        mapper.add(new Brand("同城2","58同城2",96,"帮助所有人找到工作2",1));
+        mapper.add(new Brand("同城4","58同城4",96,"帮助所有人找到工作4",1));
         Brand tongcheng = mapper.selectAllByBrandNameUser("同城2");
         System.out.println(tongcheng);
         sqlSession.commit();
@@ -117,6 +117,21 @@ public class test1 {
         System.out.println(mapper.selectAll());
         sqlSession.commit();
         sqlSession.close();
-        //
+
+    }
+
+    @Test
+    public void delete_By_ids() throws IOException {
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+
+        int[] ids = {6,7,8};
+        mapper.deleteByIds(ids);
+        sqlSession.commit();
+        sqlSession.close();
     }
 }
