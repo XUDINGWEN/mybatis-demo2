@@ -1,7 +1,6 @@
 package com.xdw;
 
 import com.xdw.Mapper.BrandMapper;
-import com.xdw.Mapper.UserMapper;
 import com.xdw.pojo.Brand;
 import com.xdw.pojo.User;
 import org.apache.ibatis.io.Resources;
@@ -22,6 +21,17 @@ import java.util.Map;
  * @date 18/10/2022 下午8:21
  */
 public class test1 {
+    @Test
+    public void BrandUse_selectAll() throws IOException {
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+        List<Brand> users = mapper.selectAll2();
+        System.out.println(users);
+    }
 
 
     @Test
@@ -63,27 +73,26 @@ public class test1 {
 
         List<Brand> brands = mapper.selectByCondition(map);
         System.out.println(brands);
+
+
+
     }
 
     @Test
-    public void BrandUse_updateBy_id() throws IOException {
+    public void UpdateBy_id() throws IOException {
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
         BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
 
         Brand brand = new Brand();
-        brand.setId(2);
-        brand.setOrdered(88);
+        brand.setId(4);
+        brand.setDescription("58同城带你找工作");
 
         mapper.update(brand);
 
-        Brand huawei = mapper.selectAllByBrandNameUser("华为");
-        System.out.println(huawei);
-
-        sqlSession.commit();
         sqlSession.close();
     }
 
@@ -93,14 +102,17 @@ public class test1 {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
         BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
 
+        Brand brand = new Brand("同城4", "58同城4", 96, "帮助所有人找到工作4", 1);
+        mapper.add(brand);
+        Brand TongCheng = mapper.selectAllByBrandNameUser("同城2");
+        System.out.println(TongCheng);
+        System.out.println(brand.getId());
 
-        mapper.add(new Brand("同城4","58同城4",96,"帮助所有人找到工作4",1));
-        Brand tongcheng = mapper.selectAllByBrandNameUser("同城2");
-        System.out.println(tongcheng);
-        sqlSession.commit();
+        System.out.println(mapper.selectAll2());
+
         sqlSession.close();
     }
 
@@ -110,12 +122,12 @@ public class test1 {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
         BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
 
-        mapper.deleteById(5);
-        System.out.println(mapper.selectAll());
-        sqlSession.commit();
+
+        mapper.deleteById(7);
+        System.out.println(mapper.selectAll2());
         sqlSession.close();
 
     }
@@ -126,12 +138,13 @@ public class test1 {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
         BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
 
-        int[] ids = {6,7,8};
+        int[] ids = {8};
         mapper.deleteByIds(ids);
-        sqlSession.commit();
+
+
         sqlSession.close();
     }
 }

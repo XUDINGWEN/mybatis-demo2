@@ -12,17 +12,20 @@
     <resultMap id="ResultMap" type="brand">
     <!--
     column是表的列名，property是实例类的属性
+    实质上是将返回之中的brand_name列名改为brandName
+    只有select需要
     -->
         <result column="brand_name" property="brandName"/>
         <result column="company_name" property="companyName"/>
     </resultMap>
-    <insert id="add">
+<!--    useGeneratedKeys自动生成主键，使用keyProperty将id返回给brand的实体类里的id-->
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
         insert into tb_brand(brand_name,company_name,ordered,description,status)
-        values (#{brandName},#{companyName},#{ordered},#{description},#{status});
+        values (#{brand.brandName},#{brand.companyName},#{brand.ordered},#{brand.description},#{brand.status});
     </insert>
 
 
-    <select id="selectAll" resultMap="ResultMap">
+    <select id="selectAll2" resultMap="ResultMap">
         select *
         from tb_brand
     </select>
@@ -59,7 +62,10 @@
             <if test="status != null">
                 status = #{status}
             </if>
-            <if test="ordered">
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="ordered != null">
                 ordered=#{ordered}
             </if>
         </set>
@@ -81,7 +87,7 @@
 -->
     <delete id="deleteByIds">
         delete from tb_brand where id in
-        <foreach collection="array" item="id" separator="," open="(" close=")">
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
         ;

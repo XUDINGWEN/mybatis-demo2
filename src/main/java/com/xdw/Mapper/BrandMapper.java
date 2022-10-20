@@ -13,17 +13,18 @@ import java.util.Map;
  * @date 19/10/2022 下午7:26
  */
 public interface BrandMapper {
-    List<User> selectAll();
+    List<Brand> selectAll2();
 
     Brand selectAllByBrandNameUser(@Param("brandName") String brandName);
 
-    List<Brand> selectByCondition( Map map);
+    List<Brand> selectByCondition(Map map);
 
     int update(Brand brand);
 
-    void add(Brand brand);
+    //虽然可以自己识别为
+    void add(@Param("brand") Brand brand);
 
-    void deleteById(int id);
+    void deleteById(@Param("id")int id);
 
-    void deleteByIds(int[] ids);
+    void deleteByIds(@Param("ids")int[] ids);
 }
